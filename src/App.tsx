@@ -1,4 +1,5 @@
 import { css } from "../styled-system/css";
+import { Link } from "./components/ui/link";
 
 const headerStyles = css({
   display: "flex",
@@ -12,7 +13,7 @@ function App() {
     <>
       <header className={headerStyles}>
         <h1>掲示板</h1>
-        <a href="#">スレッドを立てる</a>
+        <Link href="#">スレッドを立てる</Link>
       </header>
       <main>
         <h2>新着スレッド</h2>
