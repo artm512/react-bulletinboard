@@ -16,7 +16,7 @@ const headerStyles = css({
   padding: "20px 20px",
   backgroundColor: "Menu",
   color: "MenuText",
-  boxShadow: "0px 0px 10px 0px rgba(0, 0, 0, 0.2);",
+  boxShadow: "0px 0px 10px 0px rgba(0, 0, 0, .2)",
 });
 
 const mainStyles = css({
@@ -75,7 +75,7 @@ function App() {
         {threads.length > 0 ? (
           <ul className={threadListStyles}>
             {threads.map((thread) => (
-              <li>
+              <li key={thread.id}>
                 <Card.Root className={cardStyles}>
                   <Card.Title>{thread.title}</Card.Title>
                 </Card.Root>
