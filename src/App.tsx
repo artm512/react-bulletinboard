@@ -1,7 +1,14 @@
+import { useEffect, useState } from "react";
+
 import { css } from "../styled-system/css";
 import { Link } from "./components/ui/link";
 import { Heading } from "./components/ui/heading";
 import { Card } from "./components/ui/card";
+
+type TThreads = {
+  id: string;
+  title: string;
+}[];
 
 const headerStyles = css({
   display: "flex",
@@ -30,7 +37,33 @@ const threadListStyles = css({
   gap: "4",
 });
 
+const LoadingStyles = css({
+  marginTop: "4",
+});
+
+const baseUrl = "https://railway.bulletinboard.techtrain.dev";
+
 function App() {
+  const [threads, setThreads] = useState<TThreads>([]);
+  const fetchThread = async () => {
+    try {
+      const response = await fetch(`${baseUrl}/threads`, {
+        method: "GET",
+      });
+      if (!response.ok) {
+        throw new Error(`レスポンスステータス: ${response.status}`);
+      }
+      const data = await response.json();
+      setThreads(data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  useEffect(() => {
+    fetchThread();
+  }, []);
+
   return (
     <>
       <header className={headerStyles}>
@@ -39,43 +72,19 @@ function App() {
       </header>
       <main className={mainStyles}>
         <Heading as="h2">新着スレッド</Heading>
-        <ul className={threadListStyles}>
-          <li>
-            <Card.Root className={cardStyles}>
-              <Card.Title>推しについて語るスレ</Card.Title>
-            </Card.Root>
-          </li>
-          <li>
-            <Card.Root className={cardStyles}>
-              <Card.Title>今期覇権アニメ</Card.Title>
-            </Card.Root>
-          </li>
-          <li>
-            <Card.Root className={cardStyles}>
-              <Card.Title>TechTrainってどうなの？</Card.Title>
-            </Card.Root>
-          </li>
-          <li>
-            <Card.Root className={cardStyles}>
-              <Card.Title>暇な人雑談しませんか</Card.Title>
-            </Card.Root>
-          </li>
-          <li>
-            <Card.Root className={cardStyles}>
-              <Card.Title>Rustについて語るスレ</Card.Title>
-            </Card.Root>
-          </li>
-          <li>
-            <Card.Root className={cardStyles}>
-              <Card.Title>自宅警備員だけどなんか質問ある？</Card.Title>
-            </Card.Root>
-          </li>
-          <li>
-            <Card.Root className={cardStyles}>
-              <Card.Title>大阪でおすすめのラーメン屋教えて</Card.Title>
-            </Card.Root>
-          </li>
-        </ul>
+        {threads.length > 0 ? (
+          <ul className={threadListStyles}>
+            {threads.map((thread) => (
+              <li>
+                <Card.Root className={cardStyles}>
+                  <Card.Title>{thread.title}</Card.Title>
+                </Card.Root>
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <p className={LoadingStyles}>Loading...</p>
+        )}
       </main>
     </>
   );
