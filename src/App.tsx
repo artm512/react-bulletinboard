@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 
 import { css } from "../styled-system/css";
 import { Heading } from "./components/ui/heading";
 import { Card } from "./components/ui/card";
 
-type TThreads = {
+export type TThreads = {
   id: string;
   title: string;
 }[];
@@ -55,7 +56,9 @@ function App() {
           {threads.map((thread) => (
             <li key={thread.id}>
               <Card.Root className={cardStyles}>
-                <Card.Title>{thread.title}</Card.Title>
+                <Card.Title>
+                  <Link to={`/threads/${thread.id}`}>{thread.title}</Link>
+                </Card.Title>
               </Card.Root>
             </li>
           ))}
