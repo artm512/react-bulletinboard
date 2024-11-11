@@ -1,1 +1,1 @@
-export * from "./new.tsx";
+export const ThreadsNew = () => <>ThreadsNew</>;
