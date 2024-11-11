@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 
 import { css } from "../styled-system/css";
-import { Link } from "./components/ui/link";
 import { Heading } from "./components/ui/heading";
 import { Card } from "./components/ui/card";
 
@@ -41,6 +41,12 @@ const LoadingStyles = css({
   marginTop: "4",
 });
 
+const linkStyles = css({
+  _hover: {
+    textDecoration: "underline",
+  },
+});
+
 const baseUrl = "https://railway.bulletinboard.techtrain.dev";
 
 function App() {
@@ -68,7 +74,9 @@ function App() {
     <>
       <header className={headerStyles}>
         <Heading as="h1">掲示板</Heading>
-        <Link href="#">スレッドを立てる</Link>
+        <Link to="/threads/new" className={linkStyles}>
+          スレッドを立てる
+        </Link>
       </header>
       <main className={mainStyles}>
         <Heading as="h2">新着スレッド</Heading>
