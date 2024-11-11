@@ -26,16 +26,38 @@ const errorMessageStyles = css({
   color: "red",
 });
 
+// TODO: 共通化する
+const baseUrl = "https://railway.bulletinboard.techtrain.dev";
+
 export const ThreadsNew: FC = memo(() => {
   const [isLoading, setIsLoading] = useState(false);
   const {
     register,
     handleSubmit,
     formState: { errors },
+    setValue,
   } = useForm<Inputs>();
 
-  const onSubmit: SubmitHandler<Inputs> = (data) => {
-    console.log(data);
+  const onSubmit: SubmitHandler<Inputs> = async (data) => {
+    const { threadName: thread_name } = data;
+
+    try {
+      setIsLoading(true);
+
+      const response = await fetch(`${baseUrl}/threads`, {
+        method: "POST",
+        body: JSON.stringify({ title: thread_name }),
+      });
+      if (!response.ok) {
+        throw new Error(`レスポンスステータス: ${response.status}`);
+      }
+      await response.json();
+      setValue("threadName", "");
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
